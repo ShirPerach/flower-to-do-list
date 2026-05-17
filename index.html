@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+    <style> 
+        h1 { color: #e18298;
+             font-size: 70px
+            ;font-family: "Jersey 10", sans-serif;
+            text-align: center;
+            margin-bottom: 0;
+            text-shadow:
+            4px 0 #c95f75,
+           -4px 0 #c95f75,
+            0 4px #c95f75,
+            0 -4px #c95f75,
+            4px 4px #c95f75,
+           -4px -4px #c95f75,
+            4px -4px #c95f75,
+          -4px 4px #c95f75;
+        
+}
+        
+
+        .subtitle { color: #7DADDB;
+          font-family: "Jersey 10";
+          font-size: 20px; 
+          text-align: left;
+          margin-top: 0;
+          margin-left: 110px;
+          text-shadow:
+           2px 0 #2765A2,
+           -2px 0 #2765A2,
+            0 2px #2765A2,
+            0 -2px #2765A2,
+            2px 2px #2765A2,
+           -2px -2px #2765A2,
+            2px -2px #2765A2,
+          -2px 2px #2765A2;
+        }
+
+    p { color: #7DADDB;
+          font-family: "Jersey 10";
+          font-size: 30px; 
+          text-align: left;
+          margin-top: -20;
+          text-shadow:
+           2px 0 #2765A2,
+           -2px 0 #2765A2,
+            0 2px #2765A2,
+            0 -2px #2765A2,
+            2px 2px #2765A2,
+           -2px -2px #2765A2,
+            2px -2px #2765A2,
+          -2px 2px #2765A2;
+        }
+
+        .banner {
+        background-color: #c95f75;
+        height: 80px;
+        margin: -50px -50px 20px -50px;
+        border-radius: 21px 21px 0 0;
+        }
+
+        input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-right: 13px;
+    border: 2px solid #2765A2;
+    border-radius: 30px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+ input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: #2765A2;
+    font-size: 26px;
+    line-height: 16px;
+    display: block;
+    text-align: center;
+}
+
+@keyframes grow {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+#garden img {
+    animation: grow 1s ease;
+}
+
+
+#garden {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: auto;
+    min-height: 80px;
+    align-items: flex-end;
+
+}
+
+
+
+       #taskList {
+    flex: 1;
+    overflow-y: auto;
+}
+
+#taskList p {
+    margin: 15px 0;
+}
+
+        #taskInput {
+        border: none;
+         background: transparent;
+         outline: none;
+         font-family: "Jersey 10";
+         font-size: 30px;
+         color: #7DADDB;
+         width: 100%;
+}
+
+.delete-btn {
+    width: 20px;
+    cursor: pointer;
+    opacity: 0;
+    float: right;
+}
+
+#taskList p:hover .delete-btn {
+    opacity: 1;
+}
+        #app {
+    width: 490px;
+    height: 448px;  
+    border-radius: 34px;
+    border: 13px solid #C95F75;
+    background: #FDE3F0;
+    padding: 50px 50px 0 50px;    margin: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+}
+body {
+    background-color: #793543;
+    padding-top: 50px;
+}
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+    <div class="banner"></div>
+    <h1>to do list</h1>
+    <p class = "subtitle"> complete tasks to plant cute flowers! </p>
+
+   <div id="taskList">
+    <input id="taskInput" onkeypress="handleKey(event)">
+</div>
+
+<div id="garden">
+
+        <script>
+            
+   function toggleTask(checkbox) {
+    checkbox.parentElement.style.textDecoration = checkbox.checked ? "line-through" : "none";
+    let garden = document.getElementById("garden");
+    if (checkbox.checked) {
+        let flower = document.createElement("img");
+        flower.src = "assests/flower1.png";
+        flower.style.width = "60px";
+        garden.appendChild(flower);
+    } else {
+        if (garden.lastChild) {
+            garden.removeChild(garden.lastChild);
+            saveTasks()
+        }
+    }
+}
+
+function deleteTask(btn) {
+    btn.parentElement.remove();
+    let garden = document.getElementById("garden");
+    if (garden.lastChild) {
+        garden.removeChild(garden.lastChild);
+        saveTasks()
+    }
+}
+     function addTask() {
+     let text = document.getElementById("taskInput").value;
+     let p = document.createElement("p");
+p.innerHTML = "<input type='checkbox' onclick='toggleTask(this)'>" + text + "<img src='assests/bin.png' class='delete-btn' onclick='deleteTask(this)'>";     let taskList = document.getElementById("taskList");
+     taskList.insertBefore(p, document.getElementById("taskInput"));
+     document.getElementById("taskInput").value = "";
+     saveTasks()
+}
+            
+            function handleKey(event) {
+            if (event.key === "Enter") {
+            addTask();
+            document.getElementById("taskInput").value = "";
+            
+
+    }
+}
+
+
+function loadTasks() {
+    let saved = localStorage.getItem("tasks");
+    if (saved) {
+        let tasks = JSON.parse(saved);
+        for (let i = 0; i < tasks.length; i++) {
+            let p = document.createElement("p");
+            p.innerHTML = "<input type='checkbox' onclick='toggleTask(this)'>" + tasks[i].text + "<img src='assests/bin.png' class='delete-btn' onclick='deleteTask(this)'>";
+            if (tasks[i].done) {
+                p.style.textDecoration = "line-through";
+                p.querySelector("input").checked = true;
+                let flower = document.createElement("img");
+                flower.src = "flowers/flower1.png";
+                flower.style.width = "60px";
+                document.getElementById("garden").appendChild(flower);
+            }
+            let taskList = document.getElementById("taskList");
+            taskList.insertBefore(p, document.getElementById("taskInput"));
+        }
+    }
+}
+function saveTasks() {
+    let tasks = [];
+    let taskElements = document.getElementById("taskList").getElementsByTagName("p");
+    for (let i = 0; i < taskElements.length; i++) {
+        tasks.push({
+            text: taskElements[i].innerText,
+            done: taskElements[i].style.textDecoration.includes("line-through")
+        });
+    }
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+loadTasks();
+
+            
+    </script>
+
+   
+    
+</body>
+</html>
